@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Three / Collaborative ringtone ensemble</title>
+<style>
+
+:root{color-scheme:light;--bg:#d5d5cf;--panel:#e9e9e3;--ink:#242a29;--muted:#606663;--line:#a8ada6;--accent:#293c2b;--lcd:#b9c798;--pixel:#293b28;font-family:Arial,Helvetica,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);background-image:radial-gradient(#858b811f .7px,transparent .7px);background-size:4px 4px}main{max-width:1180px;margin:auto;padding:38px 30px 24px}header{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:26px}.eyebrow,.tag,.meta,footer,button,label,.readout,.screen,.section-label,.help{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.eyebrow{font-size:10px;letter-spacing:.14em;color:var(--muted)}h1{font-size:30px;letter-spacing:-.05em;margin:7px 0 6px}header p{font-size:13px;color:var(--muted);margin:0}.meta{font-size:10px;line-height:1.8;text-align:right}.transport{display:flex;gap:10px;align-items:center;padding:16px 0;border-block:1px solid var(--line);margin-bottom:24px}button{min-height:48px;padding:12px 22px;border:1px solid #888f89;border-bottom-width:3px;border-radius:8px;background:#eeeeea;color:var(--ink);font-weight:bold;font-size:12px;cursor:pointer}button.primary{background:#344849;color:#f5f6ee;border-color:#263c3d}button:active:not(:disabled){transform:translateY(1px);border-bottom-width:2px}button:disabled{opacity:.45;cursor:default}button:focus-visible{outline:3px solid #315ca1;outline-offset:3px}#audio-status{font:11px ui-monospace,monospace;margin-left:auto;color:var(--muted)}.instruments{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}.panel{background:var(--panel);border:1px solid #9da39d;border-bottom:5px solid #969e98;border-radius:24px 24px 32px 32px;padding:20px;min-width:0;box-shadow:inset 0 1px #fff,0 6px 0 #bfc3bb}.speaker{display:flex;gap:5px;justify-content:center;height:18px;margin-bottom:12px}.speaker i{display:block;width:4px;height:11px;background:#8a928a;border-radius:2px}.screen{background:var(--lcd);color:var(--pixel);border:7px solid #414f49;border-radius:7px;padding:12px;box-shadow:inset 2px 2px #758264;min-height:206px;position:relative}.screen:after{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 3px,#36462c06 3px 4px)}.screen-top{display:flex;justify-content:space-between;border-bottom:1px solid #52654370;padding-bottom:8px;font-size:9px;letter-spacing:.06em}.panel-head{display:flex;align-items:baseline;justify-content:space-between;margin-top:14px}h2{font:900 36px/1 ui-monospace,monospace;letter-spacing:.04em;margin:0;text-shadow:1px 0 currentColor}.number{font-size:11px}.register{font-size:9px;margin-top:6px;opacity:.8}.steps{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:5px;margin:18px 0 13px}.step{height:21px;border:1px solid #61744f;background:#2b3a2710;position:relative}.step.on{background:var(--pixel);border-color:var(--pixel)}.step.current:after{content:'';position:absolute;left:0;right:0;bottom:-7px;height:3px;background:var(--pixel)}.step.on.current{background:#58703f;box-shadow:inset 0 0 0 2px var(--pixel)}.screen-bottom{display:flex;justify-content:space-between;font-size:9px;letter-spacing:.02em;margin-top:16px}.section-label{font-size:9px;letter-spacing:.11em;text-align:center;margin:23px 0 16px;color:#515c55}.shared-controls{display:grid;grid-template-columns:1fr 1fr;gap:14px}.control{text-align:center;min-width:0}label{display:block;font-size:11px;font-weight:bold;letter-spacing:.06em}.tag{display:block;font-size:8px;letter-spacing:.07em;margin-top:5px;font-weight:normal;color:var(--muted)}.dial{width:90px;height:90px;max-width:100%;aspect-ratio:1;position:relative;margin:13px auto 8px;border-radius:50%;background:repeating-conic-gradient(from 225deg,transparent 0deg 3deg,#e9e9e3 3deg 7deg,transparent 7deg 15deg),conic-gradient(from 225deg,var(--accent) 0deg,var(--accent) var(--sweep,0deg),#b6bcb2 var(--sweep,0deg),#b6bcb2 270deg,transparent 270deg);isolation:isolate}.dial:before{content:'';position:absolute;inset:8px;background:#d3d8ce;border:1px solid #889683;border-radius:50%}.needle{position:absolute;inset:17px;transform:rotate(var(--angle,-135deg));pointer-events:none}.needle:before{content:'';position:absolute;top:0;left:calc(50% - 2px);width:4px;height:13px;background:#3d5140}.dial input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:grab;touch-action:none}.dial:focus-within{outline:2px solid #315ca1;outline-offset:4px}.dial:has(input:disabled){opacity:.4}.readout{display:block;font-size:23px;font-weight:bold;line-height:1.2;min-height:28px;font-variant-numeric:tabular-nums}.local-control{display:grid;grid-template-columns:1fr 68px 60px;align-items:center;text-align:left;gap:8px;margin-top:19px;padding-top:17px;border-top:1px solid #b7bdb3}.local-control .dial{width:64px;height:64px;margin:0}.local-control .needle{inset:16px}.local-control .needle:before{height:9px;width:3px}.local-control .readout{text-align:right;font-size:19px}.help{font-size:10px;color:var(--muted);line-height:1.8;margin:26px 0 0}footer{display:flex;justify-content:space-between;gap:24px;font-size:10px;color:var(--muted);line-height:1.7;margin-top:17px;border-top:1px solid var(--line);padding-top:14px}#sync-status{max-width:450px}.error{color:#9b301d!important}noscript{display:block;padding:30px}a{color:inherit}
+@media(max-width:820px){main{padding:24px 16px}.instruments{gap:12px}.panel{padding:14px}.screen{padding:10px;border-width:5px}.steps{gap:3px}.local-control{grid-template-columns:1fr 58px 48px;gap:4px}.local-control .dial{width:56px;height:56px}.local-control .readout{font-size:16px}.dial{width:78px;height:78px}}
+@media(max-width:650px){header{align-items:start;gap:12px}.eyebrow{font-size:8px;letter-spacing:.05em}h1{font-size:27px}.meta{font-size:8px}.instruments{grid-template-columns:1fr;gap:22px}.panel{padding:21px;max-width:410px;width:100%;margin:auto}.screen{padding:14px;border-width:7px}.steps{gap:7px}.transport{flex-wrap:wrap}#audio-status{width:100%;margin:5px 0 0}.shared-controls{gap:35px}.dial{width:94px;height:94px}.local-control{grid-template-columns:1fr 70px 64px}.local-control .dial{width:66px;height:66px}.local-control .readout{font-size:22px}.help{font-size:10px}footer{flex-direction:column;gap:8px}.screen-top,.screen-bottom{font-size:10px}}
+</style>
+</head>
+<body>
+<main>
+<header><div><div class="eyebrow">POLYPHONIC / COLLECTIVE COMPOSER</div><h1>three / ringtone ensemble</h1><p>A shared composition. Your own mix.</p></div><div class="meta">E NATURAL MINOR<br>8 STEPS / <span id="tempo"></span> BPM<br>3 VOICES · 1 COMPOSITION</div></header>
+<section class="transport" aria-label="Local playback"><button class="primary" id="start" disabled>▶ START AUDIO</button><button id="stop" disabled>■ STOP</button><span id="audio-status" role="status">Loading audio engine…</span></section>
+<div class="instruments" id="instruments"></div>
+<p class="help">Drag a dial up or right to increase; down or left to decrease. Keyboard: arrow keys, Home and End.<br>HITS and OFFSET are shared. Rhythm changes enter on the next cycle. VOLUME and playback belong to this browser.</p>
+<footer><span id="sync-status" role="status">Loading shared controls…</span><span>Open the same page on another device to play together.<br>Each device starts its own audio clock.</span></footer>
+<noscript>This instrument requires JavaScript and an internet connection.</noscript>
+</main>
+<!--
+Three voices prototype — 2026-09-15. SPDX-License-Identifier: AGPL-3.0-or-later
+Run: serve this single file with any static HTTP/HTTPS server, then open the
+same URL in two browsers. No custom state backend: PlayHTML uses its public
+PartyKit host. Internet is required for the two pinned imports and shared state.
+Click START AUDIO separately in each browser. A local static server can be run
+with: python3 -m http.server 8000 (then visit http://localhost:8000/index.html).
+For multiple devices, use the same reachable hostname / hosted URL.
+
+Official API references checked 2026-09-15:
+https://playhtml.fun/docs/getting-started/
+https://playhtml.fun/docs/custom-elements/
+https://playhtml.fun/docs/reference/init-options/
+https://strudel.cc/technical-manual/project-start/
+https://strudel.cc/learn/synths/
+The pinned published bundles were also inspected for Pattern.query,
+splitQueries, euclidRot, withHap, signal, initStrudel and scheduler options.
+
+Compatibility: PlayHTML 2.14.1 register() requires an ID string, even though
+the latest docs also describe an element overload. This file uses IDs.
+
+Shared state: each HITS/OFFSET input has one stable PlayHTML registration.
+setData writes its value; updateElement receives local AND remote updates.
+Volume is an ordinary local object and never enters any shared data.
+One persistent Strudel Pattern per voice reads a cycle snapshot. Cached
+Euclidean templates provide timing; hit ordinal indexes the fixed melody.
+All voices are stacked and played once, so controls never restart the clock.
+Audio events use envelopes shorter than one step, preventing voice overlap.
+-->
+<script src="https://unpkg.com/@strudel/web@1.0.3"></script>
+<script type="module">
+// 1. Musical data: edit these constants to change the composition.
+const BPM = 112;
+const STEPS = 8;
+const BEATS_PER_CYCLE = 4;
+const ROOM = 'three-voices-e-minor-v1';
+const VOICES = [
+  { id:'low', name:'LOW', register:'E2–D3 · foundation', melody:['e2','b2','g2','d3','c3','g2','a2','b2'], hits:3, offset:0, cutoff:1000 },
+  { id:'mid', name:'MID', register:'E4–D5 · counterline', melody:['g4','b4','a4','f#4','e4','d5','b4','a4'], hits:5, offset:0, cutoff:2400 },
+  { id:'high', name:'HIGH', register:'E5–D6 · upper line', melody:['b5','g5','f#5','a5','e5','c6','d6','g5'], hits:2, offset:1, cutoff:4600 }
+];
+// 2. Shared parameter mirror and strictly local mixer state.
+const shared = Object.fromEntries(VOICES.map(v=>[v.id,{hits:v.hits,offset:v.offset}]));
+const volumes = {low:65,mid:50,high:35};
+const controls = new Map();
+const audioStatus = document.getElementById('audio-status');
+const syncStatus = document.getElementById('sync-status');
+const startButton = document.getElementById('start');
+const stopButton = document.getElementById('stop');
+let engineReady = false, playing = false, audioContext;
+const voicePatterns = new Map();
+const rhythmTemplates = new Map();
+const timelines = new Map();
+let ensemble;
+let visualOrigin = 0, visualFrame = 0;
+const screenKeys = new Map();
+const clamp = (value,max) => Math.max(0,Math.min(max,Math.round(Number(value)||0)));
+document.getElementById('tempo').textContent = BPM;
+
+// 3. UI. Native range inputs retain keyboard and screen-reader semantics.
+function renderValue(input,value) {
+  input.value = value;
+  const max = Number(input.max), dial = input.parentElement;
+  dial.style.setProperty('--sweep',`${value/max*270}deg`);
+  dial.style.setProperty('--angle',`${value/max*270-135}deg`);
+  document.getElementById(`${input.id}-value`).value = input.dataset.kind==='volume' ? `${value}%` : String(value);
+  input.setAttribute('aria-valuetext', input.dataset.kind==='volume' ? `${value} percent, local` : `${value}, shared`);
+}
+function makeControl(v,kind,max,value) {
+  const id = `three-${v.id}-${kind}`, local = kind==='volume';
+  const wrap = document.createElement('div');
+  wrap.className = `control${local?' local-control':''}`;
+  wrap.innerHTML = `<label for="${id}">${local?'YOUR VOLUME':kind.toUpperCase()}<span class="tag">${local?'THIS PHONE ONLY':'SHARED'}</span></label><div class="dial"><span class="needle"></span><input type="range" id="${id}" min="0" max="${max}" step="1" value="${value}" data-kind="${kind}" aria-label="${v.name} ${kind}, ${local?'local':'shared'}" ${local?'':'disabled'}></div><output class="readout" id="${id}-value" for="${id}"></output>`;
+  const input = wrap.querySelector('input');
+  controls.set(id,input);
+  let drag;
+  input.addEventListener('pointerdown',e=>{
+    if(input.disabled || (e.pointerType==='mouse' && e.button!==0))return;
+    e.preventDefault(); input.focus(); input.setPointerCapture(e.pointerId);
+    drag={x:e.clientX,y:e.clientY,value:Number(input.value)};
+  });
+  input.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    const value=clamp(drag.value+((e.clientX-drag.x)+(drag.y-e.clientY))*max/160,max);
+    if(value!==Number(input.value)){input.value=value;input.dispatchEvent(new Event('input',{bubbles:true}));}
+  });
+  const end=()=>{drag=null;};
+  input.addEventListener('pointerup',end);input.addEventListener('pointercancel',end);input.addEventListener('lostpointercapture',end);
+  input.addEventListener('input',()=>{
+    const value=clamp(input.value,max);
+    if(local){volumes[v.id]=value;renderValue(input,value);}
+  });
+  return wrap;
+}
+for(const [index,v] of VOICES.entries()){
+  const panel=document.createElement('section');panel.className='panel';panel.setAttribute('aria-labelledby',`${v.id}-title`);
+  panel.innerHTML=`<div class="speaker" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><div class="screen"><div class="screen-top"><span>♪ COMPOSER</span><span>VOICE 0${index+1}</span></div><div class="panel-head"><h2 id="${v.id}-title">${v.name}</h2><span class="number">E MINOR</span></div><div class="register">${v.register}</div><div class="steps" id="${v.id}-steps" aria-label="Eight-step rhythm"></div><div class="screen-bottom"><span id="${v.id}-screen-state">READY</span><span id="${v.id}-position">STEP — / 8</span></div></div><div class="section-label">↔ SHARED COMPOSITION</div>`;
+  const group=document.createElement('div');group.className='shared-controls';
+  group.append(makeControl(v,'hits',8,v.hits),makeControl(v,'offset',7,v.offset));
+  panel.append(group,makeControl(v,'volume',100,volumes[v.id]));document.getElementById('instruments').append(panel);
+}
+controls.forEach(input=>renderValue(input,Number(input.value)));
+
+// 4. Strudel audio and pattern creation.
+// Query Strudel's own rotation implementation, so display and sound agree.
+function rhythm(hits,offset){
+  if(hits===0)return {pattern:window.silence,steps:[]};
+  const key=`${hits}:${offset}`;
+  if(!rhythmTemplates.has(key)){
+    const pattern=window.note('e2').euclidRot(hits,STEPS,offset);
+    const steps=pattern.queryArc(0,1).filter(h=>h.hasOnset()).map(h=>Math.round(Number(h.whole.begin)*STEPS)).sort((a,b)=>a-b);
+    rhythmTemplates.set(key,{pattern,steps});
+  }
+  return rhythmTemplates.get(key);
+}
+function showRhythm(v){
+  if(!engineReady)return;
+  const {hits,offset}=shared[v.id],{steps}=rhythm(hits,offset);
+  if(playing)return; // During playback, show the audible cycle snapshot.
+  screenKeys.delete(v.id);
+  const row=document.getElementById(`${v.id}-steps`);
+  row.replaceChildren(...Array.from({length:STEPS},(_,i)=>{const dot=document.createElement('span');dot.className=`step${steps.includes(i)?' on':''}`;dot.setAttribute('aria-hidden','true');return dot;}));
+  row.setAttribute('aria-label',`${v.name}: ${hits} hits; active steps ${steps.map(n=>n+1).join(', ')||'none'}`);
+}
+// Visual clock follows the existing audio scheduler; it never schedules sound.
+function drawPlayback(){
+  if(!playing)return;
+  const position=Math.max(0,(audioContext.currentTime-visualOrigin)*BPM/(60*BEATS_PER_CYCLE));
+  const cycle=Math.floor(position),step=Math.floor((position-cycle)*STEPS);
+  for(const v of VOICES){
+    const snapshot=timelines.get(v.id).cycles.get(cycle) || shared[v.id];
+    const {steps}=rhythm(snapshot.hits,snapshot.offset);
+    const key=`${cycle}:${step}:${snapshot.hits}:${snapshot.offset}`;
+    if(screenKeys.get(v.id)===key)continue;
+    screenKeys.set(v.id,key);
+    const row=document.getElementById(`${v.id}-steps`);
+    [...row.children].forEach((dot,i)=>{dot.classList.toggle('on',steps.includes(i));dot.classList.toggle('current',i===step);});
+    row.setAttribute('aria-label',`${v.name}: ${snapshot.hits} hits; active steps ${steps.map(n=>n+1).join(', ')||'none'}`);
+    document.getElementById(`${v.id}-position`).textContent=`STEP ${step+1} / 8`;
+    document.getElementById(`${v.id}-screen-state`).textContent=snapshot.hits===0?'SILENT':'PLAYING';
+  }
+  visualFrame=requestAnimationFrame(drawPlayback);
+}
+function clearPlayback(){
+  cancelAnimationFrame(visualFrame);screenKeys.clear();
+  for(const v of VOICES){
+    showRhythm(v);
+    document.getElementById(`${v.id}-position`).textContent='STEP — / 8';
+    document.getElementById(`${v.id}-screen-state`).textContent='READY';
+  }
+}
+function resetTimelines(){
+  for(const v of VOICES)timelines.set(v.id,{nextCycle:0,nextNote:0,cycles:new Map()});
+}
+function cycleFor(v,cycle){
+  const timeline=timelines.get(v.id);
+  // Snapshot once per cycle. Repeated lookahead queries must be pure with
+  // respect to note advancement: querying the same hit twice cannot skip notes.
+  while(timeline.nextCycle<=cycle){
+    const {hits,offset}=shared[v.id];
+    timeline.cycles.set(timeline.nextCycle,{hits,offset,firstNote:timeline.nextNote});
+    timeline.nextNote=(timeline.nextNote+hits)%v.melody.length;
+    timeline.nextCycle++;
+  }
+  // Bound memory for long performances; the scheduler queries forwards.
+  for(const key of timeline.cycles.keys())if(key<cycle-64)timeline.cycles.delete(key);
+  return timeline.cycles.get(cycle);
+}
+function makeVoice(v){
+  const pattern=new window.Pattern(state=>{
+    const cycle=Math.floor(Number(state.span.begin));
+    if(cycle<0)return [];
+    const snapshot=cycleFor(v,cycle);
+    if(!snapshot || snapshot.hits===0)return [];
+    const {pattern,steps}=rhythm(snapshot.hits,snapshot.offset);
+    return pattern.query(state).map(h=>h.withValue(value=>{
+      const step=Math.round((Number(h.whole.begin)-cycle)*STEPS);
+      const ordinal=steps.indexOf(step);
+      return {...value,note:v.melody[(snapshot.firstNote+ordinal)%v.melody.length]};
+    }));
+  }).splitQueries();
+  return pattern.s('square').lpf(v.cutoff).attack(.004).decay(.035).sustain(.22)
+    .release(.012).clip(1)
+    // A fixed short duration caps even sparsely spaced events at < one step.
+    .duration(.55/STEPS)
+    .gain(window.signal(()=>.18*(volumes[v.id]/100)**1.5));
+}
+async function loadAudio(){
+  try{
+    if(typeof window.initStrudel!=='function')throw new Error('Strudel download failed');
+    await new Promise((resolve,reject)=>{
+      const timeout=setTimeout(()=>reject(new Error('Audio engine initialization timed out')),20000);
+      window.initStrudel({prebake:()=>{clearTimeout(timeout);resolve();}});
+    });
+    audioContext=window.getAudioContext();
+    resetTimelines();
+    for(const v of VOICES)voicePatterns.set(v.id,makeVoice(v));
+    // The @strudel/web 1.0.3 scheduler runs at 0.5 cycles/second.
+    ensemble=window.stack(...voicePatterns.values()).fast((BPM/(60*BEATS_PER_CYCLE))/.5)
+      .onTrigger((time,hap)=>{visualOrigin=time-Number(hap.whole.begin)/.5;},false);
+    engineReady=true;VOICES.forEach(showRhythm);
+    startButton.disabled=false;audioStatus.textContent='Ready · audio is local';
+  }catch(error){audioStatus.textContent=`Audio unavailable: ${error.message}. Reload to retry.`;audioStatus.classList.add('error');}
+}
+startButton.addEventListener('click',async()=>{
+  if(!engineReady||playing)return;
+  startButton.disabled=true;
+  try{
+    await audioContext.resume();
+    resetTimelines();visualOrigin=audioContext.currentTime+.1;ensemble.play();playing=true;drawPlayback();
+    audioStatus.textContent='Playing · three voices, one clock';stopButton.disabled=false;
+  }catch(error){audioStatus.textContent=`Could not start: ${error.message}`;startButton.disabled=false;}
+});
+stopButton.addEventListener('click',()=>{
+  window.hush();playing=false;clearPlayback();stopButton.disabled=true;startButton.disabled=false;audioStatus.textContent='Stopped · your mix is retained';
+});
+window.addEventListener('pagehide',()=>{cancelAnimationFrame(visualFrame);if(playing)window.hush();});
+
+// 5. PlayHTML: six independent registers; volume is never registered.
+async function loadSharing(){
+  try{
+    const {playhtml}=await import('https://unpkg.com/playhtml@2.14.1/dist/playhtml.es.js');
+    for(const v of VOICES)for(const kind of ['hits','offset']){
+      const input=controls.get(`three-${v.id}-${kind}`),max=kind==='hits'?8:7;
+      const handle=playhtml.register(input.id,{
+        defaultData:{value:shared[v.id][kind]},
+        updateElement:({data})=>{
+          const value=clamp(data?.value,max);
+          shared[v.id][kind]=value;renderValue(input,value);showRhythm(v);
+        }
+      });
+      input.addEventListener('input',()=>{const value=clamp(input.value,max);handle.setData(d=>{d.value=value;});});
+    }
+    playhtml.init({room:ROOM,onError:()=>{syncStatus.textContent='Sharing connection failed. Changes may be local until reconnection.';syncStatus.classList.add('error');}});
+    for(const input of controls.values())input.disabled=false;
+    if(!syncStatus.classList.contains('error'))syncStatus.textContent='Shared controls enabled · PlayHTML';
+  }catch(error){syncStatus.textContent=`Shared controls unavailable: ${error.message}. Reload to retry.`;syncStatus.classList.add('error');}
+}
+loadAudio();loadSharing();
+</script>
+</body>
+</html>
